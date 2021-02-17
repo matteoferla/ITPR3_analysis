@@ -303,3 +303,18 @@ heatmap
                 ))
     fig.show()
     
+## Membraned
+
+    import pymol2, os
+
+    for code in codes:
+        if os.path.exists(f'{code}.lrc.pdb'):
+            target = f'{code}.lrc.pdb'
+        else:
+            target = f'{code}.local.pdb'
+        with pymol2.PyMOL() as pymol:
+            pymol.cmd.load(f'{code}_OMP.pdb', 'OMP')
+            pymol.cmd.load(target, 'target')
+            pymol.cmd.align('target', 'OMP')
+            pymol.cmd.save(f'{code}.local.mem.pdb', 'target or resn DUM')
+    

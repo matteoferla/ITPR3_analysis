@@ -1,5 +1,6 @@
 # ITPR3_analysis
-In silico analyses of ITPR3 variants
+In silico analyses of ITPR3 variants.
+This is the support data for a [Michelanglo page](https://michelanglo.sgc.ox.ac.uk/) —page yet to be released.
 
 ## Models
 
