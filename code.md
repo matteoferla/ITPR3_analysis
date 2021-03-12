@@ -415,6 +415,9 @@ page.append_github_entry(username='matteoferla',
                          path='structures/A196A.pdb')
 page.proteins[-1]['name'] = 'A196A'
 # etc.
+```
+Now for the cool part. Adding a membrane in Michelanglo every time a component is added:
+```jupyterpython
 with ('oriented_membrane.pdb', 'r') as fh:
     page.loadfun = f'window.membrane = `{fh.read()}`;'
 page.loadfun += '''
@@ -434,6 +437,10 @@ window.addMembraneListener = () => {
     
 setTimeout(addMembraneListener, 2000);
 '''
+```
+
+Submit!
+```jupyterpython
 page.clear_revisions()
 page.commit()
 ```
