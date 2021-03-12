@@ -34,6 +34,10 @@ Pyrosetta was used.
 Base script are in [my pyrosetta_scripts repo](https://github.com/matteoferla/pyrosetta_scripts).
 Code used is in [code notes](code.md).
 
+Each of the structures was minimised and the mutations scored.
+
+![heatmap](heatmap.png)
+
 Namely, the structures were minimised using local relax against the density map.
 A final 5 cycles of dihedral Relax per chain was initially considered by not done (5 CPU days)
 instead a 12 Å neighbourhood thorough minimisation was done for each variant.
