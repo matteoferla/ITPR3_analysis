@@ -379,3 +379,62 @@ for i in range(1, residue.natoms() + 1):
                 scores[iname][st] += s
 pd.DataFrame(scores).transpose()
 ```
+
+## Michelanglo
+
+```jupyterpython
+from michelanglo_api import MikeAPI, MikePage
+
+mike = MikeAPI('matteoferla', '******')
+page = mike.get_page(uuid)
+page.proteins[0]['value'] = '6DRC'
+page.proteins[0]['type'] = 'rcsb'
+page.proteins[0]['isVariable'] = False
+
+page.proteins[0]['chain_definitions'] = [{'chain': chain,
+                                          'uniprot': 'Q14573',
+                                          'x': 5,
+                                          'y': 2611,
+                                          'offset': 0,
+                                          'range': '5-2611',
+                                          'name': 'ITPR3',
+                                          'description': None} for chain in 'ABCD']
+page.data_other = ' '.join(['class="prolink"',
+                            'data-target="viewport"',
+                            'data-focus="domain"',
+                            'data-view="[71.5,-62.1,-269.4,0,276.2,3.1,72.6,0,-12.8,-278.7,60.9,0,-209.4,-209.2,-223.9,1]"',
+                            'data-hetero=true',
+                            'data-selection=":A"',
+                            'data-color="#b2d8d8"',
+                            'data-selection-alt1=":B" data-focus-alt1="domain" data-color-alt1="#66b2b2"',
+                            'data-selection-alt2=":C" data-focus-alt2="domain" data-color-alt2="#008080"',
+                            'data-selection-alt3=":D" data-focus-alt3="domain" data-color-alt3="#004c4c"'])
+
+page.append_github_entry(username='matteoferla',
+                         repo='ITPR3_analysis',
+                         path='structures/A196A.pdb')
+page.proteins[-1]['name'] = 'A196A'
+# etc.
+with ('oriented_membrane.pdb', 'r') as fh:
+    page.loadfun = f'window.membrane = `{fh.read()}`;'
+page.loadfun += '''
+window.addMembrane = () => {
+    const stage = NGL.getStage();
+    const memblob = new Blob([window.membrane, {type: 'text/plain'}]);
+    stage.loadFile(memblob, {ext: 'pdb', firstModelOnly: true})
+         .then(o => o.addRepresentation('ball+stick'));
+    };
+    
+window.addMembraneListener = () => {
+    const stage = NGL.getStage();
+    window.addMembrane();
+    stage.signals.componentAdded.add(() => {
+        if (stage.compList.length < 2) window.addMembrane();
+    });}
+    
+setTimeout(addMembraneListener, 2000);
+'''
+page.clear_revisions()
+page.commit()
+```
+Descript
