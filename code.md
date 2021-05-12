@@ -7,7 +7,7 @@ hence the `pyrosetta_help` imports.
 
 IDs from Paknejad & Hite, 2018
 
-```jupyterpython
+```python
 raw = 'hIP3R3 apo (EMD-7978, PDB 6DQJ)	hIP3R3 IP3 class 1 (EMD-7981, PDB 6DQN)	hIP3R3 IP3 class 2 (EMD-7984, PDB 6DQV)	hIP3R3 IP3 class 3 (EMD-7983, PDB 6DQS)	hIP3R3 IP3 class 4 (EMD-7986, PDB 6DQZ)	hIP3R3 IP3 class 5 (EMD-7987, PDB 6DR0)	hIP3R3 Ca2+ bound (EMD-7988, PDB 6DR2)	hIP3R3 low IP3–Ca2+ (EMD-7991, PDB 6DRA)	hIP3R3 high IP3–Ca2+ (EMD-7994, PDB 6DRC)'
 
 import re
@@ -34,7 +34,7 @@ model_table = pd.DataFrame(models)
 
 Data retrieval: EM map, cif and OMP aligned.
 
-```jupyterpython
+```python
 from pyrosetta_help.common_ops import download_map
 from pyrosetta_help.common_ops import download_opm
 from pyrosetta_help.common_ops import download_cif # could have used PyMOL fetch
@@ -46,7 +46,7 @@ model_table.pdb.apply(download_cif)
             
 ## Any ligands?
 
-```jupyterpython
+```python
 import pymol2
     
 for i, row in model_table.iterrows():
@@ -61,7 +61,7 @@ Gives 'ZN', 'I3P' and 'CA'.
 
 Smiles from PDB needs correcting as I3P is deffo not neutral
 
-```jupyterpython
+```python
 from rdkit import Chem
 #Chem.MolFromSmiles('O[C@@H]1[C@H](O)[C@@H](O[P](O)(O)=O)[C@H](O[P](O)(O)=O)[C@@H](O)[C@@H]1O[P](O)(O)=O')
 smiles = 'O[C@@H]1[C@H](O)[C@@H](O[P]([O-])([O-])=O)[C@H](O[P]([O-])([O-])=O)[C@@H](O)[C@@H]1O[P]([O-])([O-])=O'
@@ -70,7 +70,7 @@ mol = Chem.MolFromSmiles(smiles)
     
 ![I3P_deproton](I3P_deproton.png)
 
-```jupyterpython
+```python
 from rdkit_to_params import Params
     
 with pymol2.PyMOL() as pymol:
@@ -89,7 +89,7 @@ params.dump('I3P.params')
 
 Checking it is okay:
 
-```jupyterpython
+```python
 import nglview
 
 view = nglview.show_rosetta(params.test())
@@ -101,7 +101,7 @@ view
 
 Regular boilerplate 
 
-```jupyterpython
+```python
 import pyrosetta
 from pyrosetta_help.init_ops import make_option_string, configure_logger
 
@@ -118,7 +118,7 @@ pyrosetta.init(extra_options=extra_options)
     
 Some functions imported, minimisation.
 
-```jupyterpython
+```python
 from typing import *
 from pyrosetta_help.common_ops import (get_local_scorefxn, 
                                         pose_from_file, 
@@ -171,7 +171,7 @@ Note that the size of the PDB files exceeds the 99_999 atom limit.
 
 ## Scoring
 
-```jupyterpython
+```python
 from pyrosetta_help.score_mutants import MutantScorer
 
 scoresx = []
@@ -199,7 +199,7 @@ scores.to_csv('scores.csv')
 
 long to wide:
 
-```jupyterpython
+```python
 wide = pd.DataFrame(scores, columns=['model','mutation','complex_ddG'])\
               .pivot(index='model', columns='mutation', values='complex_ddG')\
               .round(1)
@@ -207,7 +207,7 @@ wide = pd.DataFrame(scores, columns=['model','mutation','complex_ddG'])\
                       
 heatmap
                       
-```jupyterpython
+```python
 import plotly.graph_objects as go
 
 names = dict(zip(model_table.pdb, model_table.name.apply(lambda x: x.strip())))
@@ -230,7 +230,7 @@ fig.show()
     
 ## Membrane-insertion
 
-```jupyterpython
+```python
 import pymol2, os
 
     for code in codes:
@@ -250,7 +250,7 @@ import pymol2, os
 To test whether the pocket close to the R2524 binds an organophosphate, ethylphosphate was docked.
 
 First the ligand was made
-```jupyterpython
+```python
 from rdkit_to_params import Params
 
 params = Params.from_smiles('CCOP(=O)([O-])[O-]', name='EPO')
@@ -262,7 +262,7 @@ params.mol   # display rdkit.Chem.Mol in Jupyter
 ```
 Then it was placed with PyMOL.
 Then it was hi-res docked
-```jupyterpython
+```python
 pyrosetta.rosetta.protocols.docking.setup_foldtree(pose, 'ABCD_Z', pyrosetta.Vector1([1]))
 scorefxn = pyrosetta.create_score_function('ligand')
 docking = pyrosetta.rosetta.protocols.docking.DockMCMProtocol()
@@ -270,7 +270,7 @@ docking.set_scorefxn(scorefxn)
 docking.apply(pose)
 ```
 Contrained?
-```jupyterpython
+```python
 # blank previous constraints
 pyrosetta.rosetta.core.scoring.constraints.remove_constraints_of_type(pose, "atom_pair_constraint")
 # add anew constraints
@@ -310,7 +310,7 @@ Whereas '2365.ND2' is close, it breaks the model if it is brought closer, so is 
 EDIT: this is because it should be `2365:D.ND2` not `2365:A.ND2`!
 
 Consequently the constraints are not needed:
-```jupyterpython
+```python
 # relax
 movemap = pyrosetta.MoveMap()
 epo_sele = pyrosetta.rosetta.core.select.residue_selector.ResidueNameSelector('EPO')
@@ -359,7 +359,7 @@ This score is not that fantastic, yet the position seems great.
 ![pocket](pocket.png)
 
 Getting the inter-residue score contribution for each atom shows there is no atom that is causing issues.
-```jupyterpython
+```python
 score_types = ['lj_atr', 'lj_rep', 'fa_solv', 'fa_elec']
 scorefxn(pose)
 residue = pose.residue(epo_idx)
@@ -382,7 +382,7 @@ pd.DataFrame(scores).transpose()
 
 ## Michelanglo
 
-```jupyterpython
+```python
 from michelanglo_api import MikeAPI, MikePage
 
 mike = MikeAPI('matteoferla', '******')
@@ -417,8 +417,8 @@ page.proteins[-1]['name'] = 'A196A'
 # etc.
 ```
 Now for the cool part. Adding a membrane in Michelanglo every time a component is added:
-```jupyterpython
-with ('oriented_membrane.pdb', 'r') as fh:
+```python
+with open('oriented_membrane.pdb', 'r') as fh:
     page.loadfun = f'window.membrane = `{fh.read()}`;'
 page.loadfun += '''
 window.addMembrane = () => {
@@ -440,8 +440,18 @@ setTimeout(addMembraneListener, 2000);
 ```
 
 Submit!
-```jupyterpython
+```python
 page.clear_revisions()
 page.commit()
 ```
-Descript
+Description
+
+```python
+with open('description.md', 'w') as fh:
+    fh.write(page.description)
+```
+and
+```python
+with open('description.md', 'r') as fh:
+    page.description = fh.read()
+```
