@@ -38,13 +38,15 @@ In light of the absence of key membrane facing residues, the membrane framework 
 
 Given a mutation, the 12 Å neighbourhood of the wild type was energy minimised (resulting in the ∆G of the wild type),
 the mutation introduced and minimised again.
+
+A final 5 cycles of dihedral Relax per chain was initially considered by not done (5 CPU days and insufficient)
+hence the 12 Å neighbourhood thorough minimisation was done for each variant.
+
 The ref2015 scorefunction was used.
 
-![heatmap](heatmap.png)
 
-Namely, the structures were minimised using local relax against the density map.
-A final 5 cycles of dihedral Relax per chain was initially considered by not done (5 CPU days)
-instead a 12 Å neighbourhood thorough minimisation was done for each variant.
+
+![heatmap](heatmap.png)
 
 A side investigation was done to see if the pocket formed by 2527, 2524 and 2357 could bind an organophosphate
 (e.g. phospholipid). The pocket can indeed favourably accomodate an organophosphate (ethylphosphate as a proxy),
