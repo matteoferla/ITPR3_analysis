@@ -1,7 +1,7 @@
 ## Shortcuts
 
-Several methods are from my personal-use GitHub repo (https://github.com/matteoferla/pyrosetta_scripts), 
-hence the `pyrosetta_help` imports. 
+Several methods are from my helper module,`pyrosetta_help`, which is pip released (`pip install pyrosetta-help`) and
+ can be found in its GitHub repo (https://github.com/matteoferla/pyrosetta_scripts).
 
 ## Downloads
 
