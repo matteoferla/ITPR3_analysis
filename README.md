@@ -22,8 +22,6 @@ by cryoEM in various states.
 |  7 | hIP3R3 low IP3–Ca2+  | EMD-7991 | 6DRA  | 1     |  0    | 2     |
 |  8 | hIP3R3 high IP3–Ca2+ | EMD-7994 | 6DRC  | 1     |  1    | 2     |
 
-These were used for scoring.
-
 Do note that the models exceed 99,999 atoms making the PDB format problematic.
 As a consequence the minimised models are present in the [folder structures](structures) as
 both `pdb` and `mmtf`.
@@ -34,7 +32,13 @@ Pyrosetta was used.
 Base script are in [my pyrosetta_scripts repo](https://github.com/matteoferla/pyrosetta_scripts).
 Code used is in [code notes](code.md).
 
-Each of the structures was minimised and the mutations scored.
+Each of the structures was minimised using LocalRelax mover and against the respective electron density.
+
+In light of the absence of key membrane facing residues, the membrane framework was not used.
+
+Given a mutation, the 12 Å neighbourhood of the wild type was energy minimised (resulting in the ∆G of the wild type),
+the mutation introduced and minimised again.
+The ref2015 scorefunction was used.
 
 ![heatmap](heatmap.png)
 
