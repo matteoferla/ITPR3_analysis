@@ -455,3 +455,46 @@ and
 with open('description.md', 'r') as fh:
     page.description = fh.read()
 ```
+
+Region of interest selection
+
+```python
+pdb2pose = model.pose.pdb_info().pdb2pose
+selectors = [pyrosetta.rosetta.core.select.residue_selector.ResidueNameSelector('CA'),
+            pyrosetta.rosetta.core.select.residue_selector.ResidueNameSelector('I3P')]
+for chain in 'ABCD':
+    selectors.extend([
+        pyrosetta.rosetta.core.select.residue_selector.ResidueIndexSelector(pdb2pose(res=19, chain=chain)),
+        pyrosetta.rosetta.core.select.residue_selector.ResidueIndexSelector(pdb2pose(res=168, chain=chain)),
+        pyrosetta.rosetta.core.select.residue_selector.ResidueIndexSelector(pdb2pose(res=218, chain=chain)),
+        pyrosetta.rosetta.core.select.residue_selector.ResidueIndexSelector(pdb2pose(res=2517, chain=chain)),
+        pyrosetta.rosetta.core.select.residue_selector.ResidueIndexSelector(pdb2pose(res=2513, chain=chain)),
+        pyrosetta.rosetta.core.select.residue_selector.ResidueIndexSelector(pdb2pose(res=2472, chain=chain)),
+        pyrosetta.rosetta.core.select.residue_selector.ResidueIndexSelector(pdb2pose(res=2478, chain=chain))
+    ])
+or_sele = pyrosetta.rosetta.core.select.residue_selector.OrResidueSelector()
+for sele in selectors:
+    or_sele.add_residue_selector(sele)
+neigh_sele = pyrosetta.rosetta.core.select.residue_selector.NeighborhoodResidueSelector(or_sele, 8, True)
+chainA = pyrosetta.rosetta.core.select.residue_selector.ChainSelector('A')
+final_sele = pyrosetta.rosetta.core.select.residue_selector.AndResidueSelector(chainA, neigh_sele)
+v = final_sele.apply(model.pose)
+pose_indices = pyrosetta.rosetta.core.select.residue_selector.ResidueVector(v)
+number = model.pose.pdb_info().number
+chosen = [number(i) for i in pose_indices]
+```
+The `chosen` array is the used in a filtering function for pandas
+```python
+import re
+def is_in_region(mutation):
+    if mutation is None or str(mutation) == 'nan':
+        return False
+    if re.search('(\d+)', mutation) is None:
+        return False
+    n = int(re.search('(\d+)', mutation).group(1))
+    if n in chosen:
+        return True
+    return False
+
+variants = gnomad.loc[gnomad['Protein Consequence'].apply(is_in_region)]['Protein Consequence'].values
+```
