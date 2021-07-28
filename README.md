@@ -26,6 +26,17 @@ Do note that the models exceed 99,999 atoms making the PDB format problematic.
 As a consequence the minimised models are present in the [folder structures](structures) as
 both `pdb` and `mmtf`.
 
+| definition    |   from |   to |
+|:--------------|-------:|-----:|
+| cytoplasmic   |      1 | 2202 |
+| transmembrane |   2206 | 2671 |
+| Ins145_P3_rec |      3 |  230 |
+| MIR           |    233 |  433 |
+| RYDR_ITPR     |    473 |  670 |
+| RYDR_ITPR     |   1175 | 1334 |
+| RIH_assoc     |   1864 | 1974 |
+| Ion_trans     |   2206 | 2528 |
+
 ## Calculations
 
 Pyrosetta was used.
