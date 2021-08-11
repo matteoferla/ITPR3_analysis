@@ -1,4 +1,11 @@
+
+## Parts
+
+```pymol
 cd /Users/matteo/Coding/protein_modelling/ITPR3/ITPR3_analysis/structures
+cd /Users/matteo/Coding/protein_modelling/ITPR3/ITPR3_analysis/structures
+load 6DRC.min.al.cif, wildtype
+load 6DRC_oriented_membrane.pdb, membrane
 
 color white, not chain A and element C
 color 0x40e0d0, chain A and element C
@@ -29,7 +36,6 @@ set_color robin, [0, 204, 204]
 set_color celeste, [178, 255, 255]
 set_color lcyan, [224, 255, 255]
 set_color lavender, [230, 230, 250]
-
 
 ## R colors
 set_color r0, [248, 118, 109]
@@ -77,9 +83,14 @@ set_view (\
   -1247.291870117, 2520.682128906,  -20.000000000 )
 
 set cartoon_transparency, 0.3, polymer and not chain A
-   
-   
-   
+```
+
+## tetramer
+
+```pymol
+cd /Users/matteo/Coding/protein_modelling/ITPR3/ITPR3_analysis/structures
+load 6DRC.min.al.cif, wildtype
+load 6DRC_oriented_membrane.pdb, membrane
 set_color r0, [248, 118, 109]
 set_color r1, [124, 174, 0]
 set_color r2, [0, 191, 196]
@@ -101,8 +112,39 @@ set_view (\
     -0.001747698,    0.000810385, -561.165954590,\
    208.144470215,  214.182235718,  218.605468750,\
    403.015747070,  719.169494629,  -20.000000000 )
+```
 
-##
+## tetramer mod
+
+```pymol
+cd /Users/matteo/Coding/protein_modelling/ITPR3/ITPR3_analysis/structures
+load 6DRC.min.al.cif, wildtype
+load 6DRC_oriented_membrane.pdb, membrane
+set_color r6, [251, 97, 215]
+set_color r3, [0, 192, 148]
+set_color r0, [248, 118, 109]
+hide all
+show cartoon
+show sphere, resn DUM
+set cartoon_transparency, 0, polymer
+color r0, chain A
+color white, chain D
+color 0xd7a291, chain C
+color 0xffd7cb, chain B
+color grey60, resn DUM
+remove not (chain A+B+C+D or resn DUM)
+show surface
+set_view (\
+     0.693097651,   -0.207103536,    0.690454066,\
+    -0.719093919,   -0.265432477,    0.642219126,\
+     0.050265014,   -0.941623390,   -0.332899541,\
+     0.001589864,    0.000719532, -632.726257324,\
+   221.659881592,  208.782302856,  212.486053467,\
+  -1251.316284180, 2516.657470703,  -20.000000000 )
+```
+
+
+## 196
 cd /Users/matteo/Coding/protein_modelling/ITPR3/ITPR3_analysis/structures
 set_color turquoise, [64,224,208]
 set_color teal, [0, 128, 128]
@@ -156,7 +198,7 @@ show sticks, (resi 2524+2528 and chain A) or (resi 2522+2518 and chain D)
 hide sticks, element H
     
     
-##
+## 2506
 
 cd /Users/matteo/Coding/protein_modelling/ITPR3/ITPR3_analysis/structures
 set_color turquoise, [64,224,208]

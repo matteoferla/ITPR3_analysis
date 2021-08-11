@@ -356,7 +356,7 @@ print(scorefxn(pose) - scorefxn(split_pose))
 The ∆∆G score without contraints is -1.2 kcal/mol.
 This score is not that fantastic, yet the position seems great.
 
-![pocket](pocket.png)
+![pocket](figures/pocket.png)
 
 Getting the inter-residue score contribution for each atom shows there is no atom that is causing issues.
 ```python
