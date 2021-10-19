@@ -58,7 +58,7 @@ hence the 12 Å neighbourhood thorough minimisation was done for each variant.
 
 The ref2015 scorefunction was used with a 2.94 scaling to convert REU to kcal/mol. 
 
-![heatmap](figures/heatmap03-01.png)
+![heatmap](figures/heatmap3-01.png)
 
 |    | mutation   |   complex_ddG |   chainA_interface_ddG |   ratio_rmsd | highest_contributor   |   highest_contributor_value | highest_contributor_wordy                                                                                               | lowest_contributor   |   lowest_contributor_value | lowest_contributor_wordy                                                                                                |
 |---:|:-----------|--------------:|-----------------------:|-------------:|:----------------------|----------------------------:|:------------------------------------------------------------------------------------------------------------------------|:---------------------|---------------------------:|:------------------------------------------------------------------------------------------------------------------------|
